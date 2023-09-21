@@ -98,6 +98,16 @@ func (p *Personnage) RemoveObject(NomItem string) {
 	}
 }
 
+func (p *Personnage) limiteInventory() {
+	compteur := 0
+	for i := 0; i < len(p.inventory); i++ {
+		compteur += 1
+	}
+	if compteur >= 10 {
+		fmt.Println("Inventaire pleins ! ")
+	}
+}
+
 func (p *Personnage) Inventory() {
 	for i := 0; i < len(p.inventory); i++ {
 		fmt.Println("["+strconv.Itoa(i+1)+"] ", p.inventory[i].nomItem, " : ", p.inventory[i].quantite)
