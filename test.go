@@ -91,9 +91,10 @@ func (p *Personnage) RemoveObject(NomItem string) {
 	for index, valeur := range p.inventory {
 		if valeur.nomItem == NomItem {
 			if valeur.quantite == 1 {
-
+				p.inventory = append(p.inventory[:index], p.inventory[index+1:]...)
+			} else {
+				valeur.quantite--
 			}
-
 		}
 	}
 }
@@ -113,18 +114,33 @@ func (p *Personnage) Inventory() {
 	switch choix {
 	case 1:
 		if p.FindObject("Chapeau Magique") {
-			// remove element of inv
+			p.RemoveObject("Chapeau Magique")
 			p.Equipement.tete.nomItem = "Chapeau Magique" // Add stuff
 			p.pointVieMax += 10                           // Add PV
+			fmt.Println("Vous avez utilisé l'équipement Chapeau Magique")
 		} else {
-
+			fmt.Println("Vous ne posssedez pas cet élément")
 		}
-		ClearConsole()
-		fmt.Println("Vous avez utilisé l'équipement Chapeau Magique")
-		p.marchand()
+
 	case 2:
+		if p.FindObject("Tunique Volante") {
+			p.RemoveObject("Tunique Volante")
+			p.Equipement.corps.nomItem = "Tunique Volante" // Add stuff
+			p.pointVieMax += 25                            // Add PV
+			fmt.Println("Vous avez utilisé l'équipement Tunique volante")
+		} else {
+			fmt.Println("Vous ne posssedez pas cet élément")
+		}
+
 	case 3:
-	case 4:
+		if p.FindObject("Botte de Sorcier") {
+			p.RemoveObject("Botte de Sorcier")
+			p.Equipement.pied.nomItem = "Botte de Sorcier" // Add stuff
+			p.pointVieMax += 15                            // Add PV
+			fmt.Println("Vous avez utilisé l'équipement Botte de Sorcier")
+		} else {
+			fmt.Println("Vous ne possedez pas cet élément")
+		}
 	}
 }
 
@@ -255,7 +271,10 @@ func (p *Personnage) marchand() {
 
 func main() {
 	var p1 Personnage
-	p1.Init("Harry", "Sorcier", 5, 100, 40, 100, []Objet{{"Potions de vie", "Donne de la vie", 0}}, []Sorts{{"Coup de poing", "Auto attaque de base", 10, 1}})
+	p1.Init("Harry", "Sorcier", 5, 100, 40, 100, []Objet{{"Potions de vie", "Donne de la vie", 0},
+		{"Chapeau Magique", "Donne de la vie", 1},
+		{"Tunique Volante", "Donne de la vie", 1},
+		{"Botte de Sorcier", "Donne de la vie", 1}}, []Sorts{{"Coup de poing", "Auto attaque de base", 10, 1}})
 	ClearConsole()
 	p1.Menu()
 
@@ -286,6 +305,7 @@ func (p *Personnage) displayInfo() {
 	fmt.Printf("Point_vie_actuel: %d\n", p.pointVieActual)
 	fmt.Printf("Coins: %d\n", p.coins)
 	fmt.Printf("skill: %s\n", p.skill)
+	fmt.Printf("Equipement: %s\n", p.Equipement)
 	fmt.Printf("------------------ \n")
 
 	fmt.Println("\n")
