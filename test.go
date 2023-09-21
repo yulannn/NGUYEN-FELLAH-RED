@@ -142,7 +142,7 @@ func (p *Personnage) spellBook() {
 }
 
 func (p *Personnage) takePot() {
-	fmt.Println("Vous avez utilisé une potion !")
+	fmt.Println("Vous avez utilisé la potion de vie")
 	if p.inventory[0].quantite > 0 {
 		p.inventory[0].quantite -= 1
 		if p.pointVieActual < 50 {
@@ -171,47 +171,80 @@ func (p *Personnage) poisonPot() {
 	}
 }
 
+func (p *Personnage) enoughMoney(prix int) bool {
+	if p.coins-prix < 0 {
+		return false
+	} else {
+		return true
+	}
+}
+
 func (p *Personnage) marchand() {
 	fmt.Println("Bienvenue chez le marchand que voulez vous acheter ? \n")
-	fmt.Println("1. Potion vie")
-	fmt.Println("2. Potion poison")
-	fmt.Println("3. Livre de Sort : Boule de feu")
+	fmt.Println("1. Potion vie : 3 PO")
+	fmt.Println("2. Potion poison : 6 PO")
+	fmt.Println("3. Livre de Sort : Boule de feu : 25 PO")
 	fmt.Println("4. Retour")
+	fmt.Printf("------------------ \n")
+	fmt.Printf("------------------ \n")
+	fmt.Printf("Votre solde actuel : %d\n", p.coins)
 
 	choix, _ := Inputint()
 
 	switch choix {
 	case 1:
-		nom := "Potions"
+		nom := "Potions de vie"
 		desc := "Donne 50 PV"
 		quantite := 1
-		p.addInventory(nom, quantite, desc)
-		p.coins -= 3
-		ClearConsole()
-		fmt.Println("Vous avez acheté une potion de vie ")
-		p.marchand()
+		prix := 3
+
+		if p.enoughMoney(prix) {
+			p.addInventory(nom, quantite, desc)
+			p.coins -= prix
+			ClearConsole()
+			fmt.Println("Vous avez acheté une potion de vie ")
+			p.marchand()
+		} else {
+			ClearConsole()
+			fmt.Println("Vous n'avez pas assez d'argent ")
+			p.marchand()
+		}
 
 	case 2:
 		fmt.Println("Vous avez acheté une potion de poison ")
 		nom := "Potion de poison"
 		desc := "Enleve 20% des PV"
 		quantite := 1
-		p.addInventory(nom, quantite, desc)
-		p.coins -= 6
-		ClearConsole()
-		fmt.Println("Vous avez acheté une potion de poison")
-		p.marchand()
+		prix := 6
+		if p.enoughMoney(prix) {
+			p.addInventory(nom, quantite, desc)
+			p.coins -= prix
+			ClearConsole()
+			fmt.Println("Vous avez acheté une potion de poison ")
+			p.marchand()
+		} else {
+			ClearConsole()
+			fmt.Println("Vous n'avez pas assez d'argent ")
+			p.marchand()
+		}
 
 	case 3:
 		fmt.Println("Vous avez acheté une boule de feu ")
 		nom := "Boule de feu"
 		desc := "Boule de feu qui enleve 25pv"
 		quantite := 1
-		p.addInventory(nom, quantite, desc)
-		p.coins -= 25
-		ClearConsole()
-		fmt.Println("Vous avez acheté un livre de sort")
-		p.marchand()
+		prix := 25
+		if p.enoughMoney(prix) {
+			p.addInventory(nom, quantite, desc)
+			p.coins -= prix
+			ClearConsole()
+			fmt.Println("Vous avez acheté un livre de sort ")
+			p.marchand()
+		} else {
+			ClearConsole()
+			fmt.Println("Vous n'avez pas assez d'argent ")
+			p.marchand()
+		}
 
 	case 4:
 		ClearConsole()
@@ -222,9 +255,10 @@ func (p *Personnage) marchand() {
 
 func main() {
 	var p1 Personnage
-	p1.Init("Harry", "Sorcier", 5, 100, 100, 100, []Objet{{"Potions", "Donne de la vie", 0}, {"Chapeau Magique", "", 1}, {"tunique volante", "", 1}, {"botte de sorcier", "", 1}}, []Sorts{{"Coup de poing", "Auto attaque de base", 10, 1}})
+	p1.Init("Harry", "Sorcier", 5, 100, 40, 100, []Objet{{"Potions de vie", "Donne de la vie", 0}}, []Sorts{{"Coup de poing", "Auto attaque de base", 10, 1}})
 	ClearConsole()
 	p1.Menu()
+
 }
 
 func (p *Personnage) addInventory(nom string, quantite int, desc string) {
@@ -252,7 +286,6 @@ func (p *Personnage) displayInfo() {
 	fmt.Printf("Point_vie_actuel: %d\n", p.pointVieActual)
 	fmt.Printf("Coins: %d\n", p.coins)
 	fmt.Printf("skill: %s\n", p.skill)
-	fmt.Printf("casque: %s\n", p.Equipement.tete)
 	fmt.Printf("------------------ \n")
 
 	fmt.Println("\n")
