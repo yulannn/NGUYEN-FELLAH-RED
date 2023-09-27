@@ -68,4 +68,5 @@ func (p *Personnage) Initialize(nom string, class string, level int, pointVieMax
 	p.pointVieActual = pointVieActual
 	p.coins = coins
 	p.skill = skill
+	//jgchchvj
 }
