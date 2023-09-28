@@ -61,13 +61,14 @@ func (p *Personnage) Marchand() {
 	case 2:
 		color.Green("Vous avez acheté une potion de poison ")
 		nom := "Potion de poison"
-		desc := "Enleve 20% des PV"
+		damage := 10
 		quantite := 1
+		ManaCost := 30
 		prix := 6
 
 		if p.EnoughMoney(prix) {
-			if p.LimitInventory() {
-				p.AddInventory(nom, quantite, desc)
+			if p.LimitSkill() {
+				p.AddSkill(nom, quantite, damage, ManaCost)
 				p.coins -= prix
 				ClearConsole()
 				color.Green("Vous avez acheté une potion de poison ")
@@ -87,13 +88,14 @@ func (p *Personnage) Marchand() {
 	case 3:
 		color.Green("Vous avez acheté une boule de feu ")
 		nom := "Boule de feu"
-		desc := "Boule de feu qui enleve 20pv"
+		damage := 20
 		quantite := 1
 		prix := 25
+		ManaCost := 50
 
 		if p.EnoughMoney(prix) {
-			if p.LimitInventory() {
-				p.AddInventory(nom, quantite, desc)
+			if p.LimitSkill() {
+				p.AddSkill(nom, quantite, damage, ManaCost)
 				p.coins -= prix
 				ClearConsole()
 				color.Green("Vous avez acheté un livre de sort ")
@@ -161,7 +163,7 @@ func (p *Personnage) Marchand() {
 
 	case 6:
 		// Add PV
-		nom := " Bottes de sorcier"
+		nom := "Bottes de Sorcier"
 		desc := ""
 		quantite := 1
 		prix := 5
@@ -189,5 +191,9 @@ func (p *Personnage) Marchand() {
 		ClearConsole()
 		p.Menu()
 		break
+
+	default:
+		fmt.Println("Choix invalide !")
+		p.Marchand()
 	}
 }

@@ -48,10 +48,6 @@ func (p *Personnage) LimitInventory() bool {
 	return len(p.inventory) < 10
 }
 
-func (p *Personnage) Skill() {
-	fmt.Println(p.skill)
-}
-
 func (p *Personnage) TakePot() {
 	if p.inventory[0].quantite > 0 {
 		p.inventory[0].quantite -= 1
@@ -78,7 +74,7 @@ func (m *Monstre) PoisonPot() {
 				break
 			}
 		}
-		fmt.Println("[-10 POISON] Points de vie de l'ennemi : ", m.points_vie_actuels, "/", m.points_vie_maximum)
+		fmt.Println("[-5 POISON] Points de vie de l'ennemi : ", m.points_vie_actuels, "/", m.points_vie_maximum)
 	}
 }
 
@@ -110,31 +106,34 @@ func (p *Personnage) Inventory() {
 				p.RemoveObject("Chapeau Magique")             // ICIIIIIIII
 				p.Equipement.tete.nomItem = "Chapeau Magique" // Add stuff
 				p.pointVieMax += 10
+				p.pointVieActual += 10
+				ClearConsole()
 				fmt.Println("Vous avez équipé le chapeau magique")
 				p.Inventory()
 
 			}
-			break
 
 		case "Tunique Volante":
 			if p.FindObject("Tunique Volante") {
 				p.RemoveObject("Tunique Volante")
 				p.Equipement.corps.nomItem = "Tunique Volante" // Add stuff
 				p.pointVieMax += 25
+				p.pointVieActual += 25
+				ClearConsole()
 				fmt.Println("Vous avez équipé la tunique Volante")
 				p.Inventory()
 			}
-			break
 
-		case "Bottes de sorcier":
+		case "Bottes de Sorcier":
 			if p.FindObject("Bottes de Sorcier") {
 				p.RemoveObject("Bottes de Sorcier")
 				p.Equipement.pied.nomItem = "Bottes de Sorcier" // Add stuff
 				p.pointVieMax += 15
+				p.pointVieActual += 15
+				ClearConsole()
 				fmt.Println("Vous avez equipé les Bottes de sorcier")
 				p.Inventory()
 			}
-			break
 
 		case "Retour ":
 			p.Menu()

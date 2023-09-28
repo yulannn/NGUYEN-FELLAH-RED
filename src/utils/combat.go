@@ -7,23 +7,30 @@ import (
 )
 
 func (m *Monstre) PlayerRound(p *Personnage) {
+	fmt.Println("              _,._      ")
+	fmt.Println("  .||,       /_ _\\     ")
+	fmt.Println(" \\.`',/      |'L'| |    ")
+	fmt.Println(" = ,. =      | -,| L    ")
+	fmt.Println(" / || \\    ,-'\"/,'`.   ")
+	fmt.Println("   ||     ,'   `,,. `.  ")
+	fmt.Println("   ,|____,' , ,;' \\| |  ")
+	fmt.Println("  (3|\\    _/|/'   _| |  ")
+	fmt.Println("   ||/,-''  | >-'' _,\\ ")
+	fmt.Println("   ||'      ==\\ ,-'  ,' ")
+
 	color.Blue("Quelle attaque voulez vous utiliser ")
 	index := 0
 	for _, i := range p.skill {
 		fmt.Printf("%d. %s \n", index+1, i.NomSort)
 		index++
 	}
-	for _, i := range p.inventory {
-		fmt.Printf("%d. %s \n", index+1, i.nomItem)
-		index++
-
-	}
 	attaque, _ := Inputint()
 	if attaque <= len(p.skill) {
 		skill := p.skill[attaque-1]
 		switch skill.NomSort {
-		case "Coup de poings":
+		case "Coup de poing":
 			m.points_vie_actuels -= skill.Damage
+			ClearConsole()
 			color.Green("Vous avez infligé un coup de poing ")
 			if m.points_vie_actuels < 0 {
 				m.points_vie_actuels = 0
@@ -31,17 +38,18 @@ func (m *Monstre) PlayerRound(p *Personnage) {
 			fmt.Println("Vie restante ennemi", m.points_vie_actuels, "pv")
 			fmt.Println("------------------------------")
 			break
-		}
-	} else {
-		sort := attaque - len(p.skill)
-		objet := p.inventory[sort-1]
-		switch objet.nomItem {
+
 		case "Potion de poison":
+			p.mana -= 30
 			color.Green("Vous avez utilisé la potion de poison ")
+			fmt.Println("Mana restant :", p.mana)
 			m.PoisonPot()
 			break
+
 		case "Boule de feu":
+			p.mana -= 60
 			color.Green("Vous avez utilisé la boule de feu ")
+			fmt.Println("Mana restant :", p.mana)
 			m.BouleDeFeu()
 
 		}
@@ -51,20 +59,37 @@ func (m *Monstre) PlayerRound(p *Personnage) {
 }
 
 func (p *Personnage) EnemieRound() {
-	color.Red("Le monstre vous a infligé Griffure")
+	fmt.Println("       .-.       ")
+	fmt.Println("      ( \")      ")
+	fmt.Println("   /\\_.' '._/\\   ")
+	fmt.Println("   |         |   ")
+	fmt.Println("    \\       /    ")
+	fmt.Println("     \\    /`     ")
+	fmt.Println("    (__)  /      ")
+	fmt.Println("   `.__.'        ")
+	color.Red("Le détraqueur vous a infligé Griffure")
 	p.pointVieActual -= m.pointsAttaque
 	fmt.Println("Il vous reste ", p.pointVieActual, "pv")
 	fmt.Println("------------------------------")
-	time.Sleep(1000 * time.Millisecond)
+	time.Sleep(2000 * time.Millisecond)
 }
 
 func (m *Monstre) TrainFight(p *Personnage) {
 	for i := 0; p.pointVieActual > 0 || m.points_vie_actuels > 0; i++ {
-		m.PlayerRound(p)
-		m.DeadMonstre(p)
-		time.Sleep(1000 * time.Millisecond)
-		p.EnemieRound()
-		p.DeadPersonnage()
+		if p.initiative > m.initiative {
+			m.PlayerRound(p)
+			m.DeadMonstre(p)
+			time.Sleep(2000 * time.Millisecond)
+			p.EnemieRound()
+			p.DeadPersonnage()
+		} else {
+			p.EnemieRound()
+			p.DeadPersonnage()
+			time.Sleep(2000 * time.Millisecond)
+			m.PlayerRound(p)
+			m.DeadMonstre(p)
+		}
+
 	}
 
 }
@@ -74,7 +99,7 @@ func (p *Personnage) DeadPersonnage() {
 		fmt.Println("Vous etes mort !!!")
 		p.pointVieActual = p.pointVieActual / 2
 		fmt.Println("Vous etes résuscité avec la moitié de votre vie")
-		time.Sleep(2500 * time.Millisecond)
+		time.Sleep(3000 * time.Millisecond)
 		ClearConsole()
 		p.Menu()
 	}
@@ -82,8 +107,11 @@ func (p *Personnage) DeadPersonnage() {
 
 func (m *Monstre) DeadMonstre(p *Personnage) {
 	if m.points_vie_actuels <= 0 {
-		fmt.Println("Le monstre est mort !!!")
-		time.Sleep(2500 * time.Millisecond)
+		fmt.Println("Le détraqueur est mort !!!")
+		p.xp += 100
+		p.Niveau()
+		fmt.Println("Vous avez gagné 100xp vous passez level 2 ")
+		time.Sleep(3000 * time.Millisecond)
 		ClearConsole()
 		p.Menu()
 	}

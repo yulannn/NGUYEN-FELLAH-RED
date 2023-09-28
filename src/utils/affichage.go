@@ -29,8 +29,6 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Printf("Point_vie_max: %d\n", p.pointVieMax)
 	fmt.Printf("Point_vie_actuel: %d\n", p.pointVieActual)
 	fmt.Printf("Coins: %d\n", p.coins)
-	fmt.Printf("skill: %s\n", p.skill)
-	fmt.Printf("Equipement: %s\n", p.Equipement)
 	fmt.Printf("------------------ \n")
 
 	fmt.Println("\n")

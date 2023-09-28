@@ -1,10 +1,10 @@
 package utils
 
 type Sorts struct {
-	NomSort     string
-	Description string
-	Damage      int
-	Quantite    int
+	NomSort  string
+	Damage   int
+	Quantite int
+	ManaCost int
 }
 
 type Objet struct {
@@ -23,6 +23,10 @@ type Personnage struct {
 	coins          int
 	skill          []Sorts
 	Equipement     Equipement
+	initiative     int
+	xp             int
+	xp_max         int
+	mana           int
 }
 
 type Equipement struct {
@@ -36,15 +40,17 @@ type Monstre struct {
 	points_vie_maximum int
 	points_vie_actuels int
 	pointsAttaque      int
+	initiative         int
 }
 
-var m = Monstre{"Gobelin", 40, 40, 20}
+var m = Monstre{"Fantome", 40, 40, 10, 5}
 
-func (m *Monstre) InitGoblin(nom string, points_vie_maximum int, points_vie_actuels int, pointsAttaque int) {
+func (m *Monstre) InitMonstre(nom string, points_vie_maximum int, points_vie_actuels int, pointsAttaque int, initiative int) {
 	m.nom = nom
 	m.points_vie_maximum = points_vie_maximum
 	m.points_vie_actuels = points_vie_actuels
 	m.pointsAttaque = pointsAttaque
+	m.initiative = initiative
 }
 
 func (o *Objet) Init1(nomItem string, description string, quantite int) {
@@ -53,14 +59,14 @@ func (o *Objet) Init1(nomItem string, description string, quantite int) {
 	o.quantite = quantite
 }
 
-func (s *Sorts) Init2(nomSort string, description string, damage int, quantite int) {
+func (s *Sorts) Init2(nomSort string, damage int, quantite int, ManaCost int) {
 	s.NomSort = nomSort
-	s.Description = description
 	s.Damage = damage
 	s.Quantite = quantite
+	s.ManaCost = ManaCost
 }
 
-func (p *Personnage) Initialize(nom string, class string, level int, pointVieMax int, pointVieActual int, coins int, skill []Sorts) {
+func (p *Personnage) Initialize(nom string, class string, level int, pointVieMax int, pointVieActual int, coins int, skill []Sorts, initiative int, xp int, xp_max int, mana int) {
 	p.nom = nom
 	p.class = class
 	p.level = level
@@ -68,5 +74,25 @@ func (p *Personnage) Initialize(nom string, class string, level int, pointVieMax
 	p.pointVieActual = pointVieActual
 	p.coins = coins
 	p.skill = skill
-	//jgchchvj
+	p.initiative = initiative
+	p.xp = xp
+	p.xp_max = xp_max
+	p.mana = mana
+}
+
+func (p *Personnage) Niveau() {
+	if p.xp == p.xp_max {
+		p.level += 1
+		p.pointVieActual += 20
+		p.pointVieMax += 20
+		p.coins += 10
+	}
+}
+
+func (p *Personnage) NoMana() bool {
+	if p.mana <= 0 {
+		return true
+	} else {
+		return false
+	}
 }

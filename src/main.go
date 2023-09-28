@@ -6,13 +6,12 @@ func main() {
 	var p1 utils.Personnage
 	var sorts = []utils.Sorts{
 		{
-			NomSort:     "Coup de poings",
-			Description: "",
-			Damage:      10,
-			Quantite:    1,
+			NomSort:  "Coup de poing",
+			Damage:   10,
+			Quantite: 1,
 		},
 	}
-	p1.Initialize("Harry", "Sorcier", 5, 100, 100, 100, sorts)
+	p1.Initialize("Son Goku", "Sorcier", 1, 100, 100, 100, sorts, 6, 0, 100, 100)
 	utils.ClearConsole()
 	p1.Menu()
 }
