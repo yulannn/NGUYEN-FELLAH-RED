@@ -40,14 +40,12 @@ func (m *Monstre) PlayerRound(p *Personnage) {
 			break
 
 		case "Potion de poison":
-			p.mana -= 30
 			color.Green("Vous avez utilisé la potion de poison ")
 			fmt.Println("Mana restant :", p.mana)
 			m.PoisonPot()
 			break
 
 		case "Boule de feu":
-			p.mana -= 60
 			color.Green("Vous avez utilisé la boule de feu ")
 			fmt.Println("Mana restant :", p.mana)
 			m.BouleDeFeu()

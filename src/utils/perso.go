@@ -88,11 +88,3 @@ func (p *Personnage) Niveau() {
 		p.coins += 10
 	}
 }
-
-func (p *Personnage) NoMana() bool {
-	if p.mana <= 0 {
-		return true
-	} else {
-		return false
-	}
-}
